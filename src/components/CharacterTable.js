@@ -12,6 +12,7 @@ const CharacterTable = () => {
   const [filters, setFilters] = useState({});
   const [pageSize, setPageSize] = useState(10); // Default page size
   const [totalPages, setTotalPages] = useState(0); // Toplam sayfa sayısını tutar
+  const [sortOrder, setSortOrder] = useState("asc"); // Sıralama durumu
 
   useEffect(() => {
     const getAllCharacters = async () => {
@@ -55,6 +56,20 @@ const CharacterTable = () => {
   const handlePageSizeChange = (e) => {
     setPageSize(Number(e.target.value));
     setPage(1); // Reset to first page
+  };
+
+  const handleSort = () => {
+    const sortedCharacters = [...characters].sort((a, b) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      if (sortOrder === "asc") {
+        return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+      } else {
+        return nameA > nameB ? -1 : nameA < nameB ? 1 : 0;
+      }
+    });
+    setCharacters(sortedCharacters);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
   const startIndex = (page - 1) * pageSize;
@@ -110,8 +125,8 @@ const CharacterTable = () => {
             <table>
               <thead>
                 <tr>
-                  <th onClick={() => setFilters({ ...filters, sort: "name" })}>
-                    Name
+                  <th onClick={handleSort}>
+                    Name {sortOrder === "asc" ? "▲" : "▼"}
                   </th>
                   <th>Location</th>
                   <th>Gender</th>
