@@ -1,5 +1,6 @@
 import React from "react";
 
+// Seçilen karakterin detaylarını gösteren fonksiyonel bileşen.
 const CharacterDetails = ({ character }) => {
   return (
     <div>
