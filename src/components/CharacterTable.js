@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { fetchCharacters } from "../api";
-import CharacterDetails from "./CharacterDetails";
-import Pagination from "./Pagination";
+import { fetchCharacters } from "../api"; // API çağrısı için fonksiyonu içe aktar.
+import CharacterDetails from "./CharacterDetails"; 
+import Pagination from "./Pagination"; // Sayfalama bileşeni.
 
 const CharacterTable = () => {
-  const [characters, setCharacters] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [characters, setCharacters] = useState([]); // Karakter verilerini tutar.
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+  const [selectedCharacter, setSelectedCharacter] = useState(null); // Seçilen karakterin detaylarını tutar.
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState({});
   const [pageSize, setPageSize] = useState(10); // Default page size
   const [totalPages, setTotalPages] = useState(0); // Toplam sayfa sayısını tutar
   const [sortOrder, setSortOrder] = useState("asc"); // Sıralama durumu
 
+  // Sayfa, filtreler veya sayfa boyutu değiştiğinde karakter verilerini getir.
   useEffect(() => {
     const getAllCharacters = async () => {
       setLoading(true);
@@ -45,17 +46,20 @@ const CharacterTable = () => {
     getAllCharacters();
   }, [filters]);
 
+  // Karakter seçildiğinde detaylarını göstermek için state'i güncelle.
   const handleCharacterClick = (character) => {
     setSelectedCharacter(character);
   };
 
+  // Filtre değiştiğinde filtreleme parametrelerini state'e ata.
   const handleFilterChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
+   // Sayfa boyutu değiştiğinde sayfa boyutunu ve sayfa numarasını güncelle.
   const handlePageSizeChange = (e) => {
     setPageSize(Number(e.target.value));
-    setPage(1); // Reset to first page
+    setPage(1); // Sayfa numarasını resetle.
   };
 
   const handleSort = () => {
